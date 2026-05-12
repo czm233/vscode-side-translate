@@ -1,0 +1,92 @@
+{
+  "name": "vscode-side-translate",
+  "displayName": "Side Translate",
+  "description": "Translate Markdown or text into an editable side preview for bilingual reading and source replacement.",
+  "version": "0.0.5",
+  "publisher": "czm",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/czm233/vscode-side-translate.git"
+  },
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:vscode-side-translate.openTranslatePreview"
+  ],
+  "main": "./out/extension.js",
+  "scripts": {
+    "compile": "tsc -p ./",
+    "marketplace:check": "node ./scripts/marketplaceCheck.js",
+    "test": "npm run compile && node ./out/test/runTest.js",
+    "watch": "tsc -watch -p ./",
+    "vscode:prepublish": "npm run compile"
+  },
+  "contributes": {
+    "commands": [
+      {
+        "command": "vscode-side-translate.openTranslatePreview",
+        "title": "Translate Side Preview",
+        "category": "Side Translate",
+        "icon": "$(globe)"
+      }
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "command": "vscode-side-translate.openTranslatePreview",
+          "when": "editorLangId == markdown || editorLangId == plaintext || resourceExtname == .md || resourceExtname == .txt",
+          "group": "navigation@100"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Side Translate",
+      "properties": {
+        "vscode-side-translate.provider": {
+          "type": "string",
+          "enum": [
+            "fastest",
+            "deepl",
+            "google",
+            "bing"
+          ],
+          "enumDescriptions": [
+            "Race Bing Translator and DeepL Free, then use the first successful result. Fastest is the default.",
+            "Use DeepL Free only.",
+            "Use Google Translate only.",
+            "Use Bing Translator only."
+          ],
+          "default": "fastest",
+          "markdownDescription": "Translation provider used by Side Translate. `fastest` sends the text to both Bing Translator and DeepL Free, then uses the first successful result."
+        },
+        "vscode-side-translate.timeoutMs": {
+          "type": "number",
+          "default": 15000,
+          "minimum": 1000,
+          "description": "Timeout in milliseconds for each translation request before the operation fails."
+        },
+        "vscode-side-translate.maxCharacters": {
+          "type": "number",
+          "default": 8000,
+          "minimum": 100,
+          "description": "Maximum characters translated in one command run. Increase this only if the provider can handle larger documents reliably."
+        }
+      }
+    }
+  },
+  "dependencies": {
+    "markdown-it": "^14.1.0"
+  },
+  "devDependencies": {
+    "@types/markdown-it": "^14.1.2",
+    "@types/node": "^20.17.24",
+    "@types/vscode": "^1.90.0",
+    "@vscode/test-electron": "^2.5.2",
+    "typescript": "^5.8.2"
+  }
+}

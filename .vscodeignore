@@ -1,0 +1,12 @@
+.vscode/**
+.vscode-test/**
+.git/**
+src/**
+docs/**
+out/test/**
+scripts/**
+AGENTS.md
+*.vsix
+tsconfig.json
+package-lock.json
+.gitignore
